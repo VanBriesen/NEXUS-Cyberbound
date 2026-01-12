@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://c4iu6n38ssuvq"]
+
+[ext_resource type="Script" uid="uid://ccpdfu8sjej33" path="res://Scripts/laufband.gd" id="1_8qq7f"]
+
+[node name="Node2D" type="Area2D"]
+script = ExtResource("1_8qq7f")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

@@ -1,0 +1,64 @@
+[gd_scene load_steps=7 format=3 uid="uid://caue4h2vjdshe"]
+
+[ext_resource type="Script" uid="uid://xekcfhyojfu4" path="res://Scripts/main_menu.gd" id="1_28flt"]
+[ext_resource type="Texture2D" uid="uid://dl7jujahc1nbb" path="res://Assets/Sprites/Start Buttton1.png" id="2_n45e2"]
+[ext_resource type="Texture2D" uid="uid://dnxu4ivb0o7bt" path="res://Assets/Sprites/Options.png" id="3_opfnp"]
+[ext_resource type="Texture2D" uid="uid://bg358ep0f60dg" path="res://Assets/Sprites/Quit.png" id="4_cp0ys"]
+[ext_resource type="Texture2D" uid="uid://b2hkrbote6fkc" path="res://Assets/Backgrounds/Title.png" id="5_n45e2"]
+[ext_resource type="PackedScene" uid="uid://darutlvmdg0xw" path="res://Scenes/color_rect.tscn" id="6_opfnp"]
+
+[node name="Main menu" type="Node2D"]
+script = ExtResource("1_28flt")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Start" type="TextureButton" parent="Control"]
+layout_mode = 0
+offset_left = 768.0
+offset_top = 120.0
+offset_right = 1024.0
+offset_bottom = 248.0
+scale = Vector2(1.0150726, 1.0218971)
+texture_normal = ExtResource("2_n45e2")
+
+[node name="Options" type="TextureButton" parent="Control"]
+layout_mode = 0
+offset_left = 768.99994
+offset_top = 268.00003
+offset_right = 1079.0
+offset_bottom = 396.00003
+scale = Vector2(1.0148282, 1.0285697)
+texture_normal = ExtResource("3_opfnp")
+
+[node name="Quit" type="TextureButton" parent="Control"]
+layout_mode = 0
+offset_left = 768.0
+offset_top = 416.0
+offset_right = 1024.0
+offset_bottom = 544.0
+scale = Vector2(1.023216, 0.9956433)
+texture_normal = ExtResource("4_cp0ys")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+z_index = -1000
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 1160.0
+offset_bottom = 648.0
+mouse_filter = 2
+texture = ExtResource("5_n45e2")
+expand_mode = 5
+
+[node name="ColorRect" parent="." instance=ExtResource("6_opfnp")]
+visible = false
+
+[node name="fadetimer" type="Timer" parent="ColorRect"]
+
+[connection signal="pressed" from="Control/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="Control/Options" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="Control/Quit" to="." method="_on_quit_pressed"]
+[connection signal="timeout" from="ColorRect/fadetimer" to="." method="_on_fadetimer_timeout"]

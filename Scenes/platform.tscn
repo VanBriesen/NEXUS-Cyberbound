@@ -1,0 +1,77 @@
+[gd_scene load_steps=7 format=3 uid="uid://cqn37uevfxrlb"]
+
+[ext_resource type="Script" uid="uid://s2clcsofkcx1" path="res://Scripts/platform.gd" id="1_n5262"]
+[ext_resource type="Texture2D" uid="uid://85478xb5gyer" path="res://Assets/AnimatedAssets/IndustryPLant/Platform.png" id="2_mrs20"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mlqre"]
+size = Vector2(32, 18)
+
+[sub_resource type="Animation" id="Animation_uojju"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Rect2(0, 0, 32, 32)]
+}
+
+[sub_resource type="Animation" id="Animation_kul6x"]
+resource_name = "up-down"
+length = 10.0
+loop_mode = 1
+step = 0.0667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 4.8, 4.866667, 4.9333334, 5, 5.0666666, 9.8, 9.866667, 9.933333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Rect2(0, 0, 32, 32), Rect2(32, 0, 32, 32), Rect2(64, 0, 32, 32), Rect2(96, 0, 32, 32), Rect2(96, 0, 32, 32), Rect2(128, 0, 32, 32), Rect2(160, 0, 32, 32), Rect2(192, 0, 32, 32), Rect2(224, 0, 32, 32)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_o24iv"]
+_data = {
+&"RESET": SubResource("Animation_uojju"),
+&"up-down": SubResource("Animation_kul6x")
+}
+
+[node name="Platform" type="StaticBody2D"]
+script = ExtResource("1_n5262")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 9)
+shape = SubResource("RectangleShape2D_mlqre")
+one_way_collision = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, 16)
+texture = ExtResource("2_mrs20")
+region_enabled = true
+region_rect = Rect2(0, 0, 32, 32)
+
+[node name="Enabled" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
+[node name="Disabled" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_o24iv")
+}
+autoplay = "up-down"
+
+[connection signal="timeout" from="Enabled" to="." method="_on_enabled_timeout"]
+[connection signal="timeout" from="Disabled" to="." method="_on_disabled_timeout"]

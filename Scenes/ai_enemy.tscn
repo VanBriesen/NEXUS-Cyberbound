@@ -1,0 +1,167 @@
+[gd_scene load_steps=15 format=3 uid="uid://7ttw1isso61g"]
+
+[ext_resource type="Script" uid="uid://ck6ej2dv7w4rw" path="res://Scripts/ai_enemy.gd" id="1_3hn8u"]
+[ext_resource type="Texture2D" uid="uid://c7v2mvb5a85u5" path="res://Assets/Sprites/Samurai_sheet.png" id="2_3hn8u"]
+[ext_resource type="PackedScene" uid="uid://b4es8gnjtj34q" path="res://Scenes/node.tscn" id="4_h81ef"]
+[ext_resource type="Script" uid="uid://bupww1xaic22b" path="res://Scripts/AI_enemy_animation_player.gd" id="4_yhf3o"]
+
+[sub_resource type="Animation" id="Animation_h81ef"]
+resource_name = "Hurt"
+length = 0.4
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Rect2(96, 288, 96, 96), Rect2(96, 288, 96, 96), Rect2(192, 288, 96, 96), Rect2(288, 288, 96, 96)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("2_3hn8u")]
+}
+
+[sub_resource type="Animation" id="Animation_a5dlp"]
+resource_name = "Idle"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.90000004),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Rect2(0, 96, 96, 96), Rect2(96, 96, 96, 96), Rect2(192, 96, 96, 96), Rect2(288, 96, 96, 96), Rect2(384, 96, 96, 96), Rect2(480, 96, 96, 96), Rect2(576, 96, 96, 96), Rect2(672, 96, 96, 96), Rect2(768, 96, 96, 96), Rect2(864, 96, 96, 96)]
+}
+
+[sub_resource type="Animation" id="Animation_bvh6a"]
+resource_name = "attack"
+length = 0.3
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.03460847, 0.07402679, 0.112483144, 0.2, 0.25),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Rect2(96, 192, 96, 96), Rect2(192, 192, 96, 96), Rect2(288, 192, 96, 96), Rect2(384, 192, 96, 96), Rect2(480, 192, 96, 96), Rect2(576, 192, 96, 96)]
+}
+
+[sub_resource type="Animation" id="Animation_t5m4n"]
+resource_name = "walk"
+loop_mode = 1
+step = 0.0625
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0625, 0.125, 0.1875, 0.25, 0.3125, 0.375, 0.4375, 0.5, 0.5625, 0.625, 0.6875, 0.75, 0.8125, 0.875, 0.9375),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Rect2(0, 0, 96, 96), Rect2(96, 0, 96, 96), Rect2(192, 0, 96, 96), Rect2(288, 0, 96, 96), Rect2(384, 0, 96, 96), Rect2(480, 0, 96, 96), Rect2(576, 0, 96, 96), Rect2(672, 0, 96, 96), Rect2(768, 0, 96, 96), Rect2(864, 0, 96, 96), Rect2(960, 0, 96, 96), Rect2(1056, 0, 96, 96), Rect2(1152, 0, 96, 96), Rect2(1248, 0, 96, 96), Rect2(1344, 0, 96, 96), Rect2(1440, 0, 96, 96)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bvh6a"]
+_data = {
+&"Hurt": SubResource("Animation_h81ef"),
+&"Idle": SubResource("Animation_a5dlp"),
+&"attack": SubResource("Animation_bvh6a"),
+&"walk": SubResource("Animation_t5m4n")
+}
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3hn8u"]
+radius = 7.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bwb4u"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mhrv3"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_a5dlp"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_t5m4n"]
+
+[node name="AiEnemy" type="CharacterBody2D" groups=["Enemy"]]
+collision_mask = 3
+script = ExtResource("1_3hn8u")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -32)
+texture = ExtResource("2_3hn8u")
+region_enabled = true
+region_rect = Rect2(96, 288, 96, 96)
+
+[node name="RayCast2D" type="RayCast2D" parent="Sprite2D"]
+position = Vector2(0, 20)
+target_position = Vector2(125, 0)
+collision_mask = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." node_paths=PackedStringArray("player")]
+libraries = {
+&"": SubResource("AnimationLibrary_bvh6a")
+}
+autoplay = "walk"
+script = ExtResource("4_yhf3o")
+player = NodePath("..")
+
+[node name="attacktimer" type="Timer" parent="AnimationPlayer" groups=["Enemy"]]
+wait_time = 0.3
+one_shot = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -15)
+shape = SubResource("CapsuleShape2D_3hn8u")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 129
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(8, -14)
+shape = SubResource("CircleShape2D_bwb4u")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-9, -14)
+shape = SubResource("CircleShape2D_mhrv3")
+
+[node name="Killzone" parent="." instance=ExtResource("4_h81ef")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Killzone"]
+position = Vector2(8, -14)
+shape = SubResource("CircleShape2D_a5dlp")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Killzone"]
+position = Vector2(-9, -14)
+shape = SubResource("CircleShape2D_t5m4n")
+
+[connection signal="animation_finished" from="AnimationPlayer" to="AnimationPlayer" method="_on_animation_finished"]
+[connection signal="timeout" from="AnimationPlayer/attacktimer" to="AnimationPlayer" method="_on_attacktimer_timeout"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="body_entered" from="Area2D" to="AnimationPlayer" method="_on_area_2d_body_entered"]

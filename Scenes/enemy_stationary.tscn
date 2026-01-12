@@ -1,0 +1,138 @@
+[gd_scene load_steps=12 format=3 uid="uid://bpqdhsgpgbt3c"]
+
+[ext_resource type="Script" uid="uid://rtypstg4iqc8" path="res://Scenes/enemy_stationary.gd" id="1_c3ytc"]
+[ext_resource type="Texture2D" uid="uid://c7v2mvb5a85u5" path="res://Assets/Sprites/Samurai_sheet.png" id="1_da4oj"]
+[ext_resource type="PackedScene" uid="uid://b4es8gnjtj34q" path="res://Scenes/node.tscn" id="2_x6kuy"]
+
+[sub_resource type="Animation" id="Animation_da4oj"]
+resource_name = "Idle"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(2.9802322e-08, 0.100000024, 0.20000005, 0.3, 0.40000004, 0.50000006, 0.6000001, 0.7, 0.8, 0.90000004),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Rect2(0, 96, 96, 96), Rect2(96, 96, 96, 96), Rect2(192, 96, 96, 96), Rect2(288, 96, 96, 96), Rect2(384, 96, 96, 96), Rect2(480, 96, 96, 96), Rect2(576, 96, 96, 96), Rect2(672, 96, 96, 96), Rect2(768, 96, 96, 96), Rect2(864, 96, 96, 96)]
+}
+
+[sub_resource type="Animation" id="Animation_n75w8"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Rect2(96, 192, 96, 96)]
+}
+
+[sub_resource type="Animation" id="Animation_6v1an"]
+resource_name = "attack"
+length = 0.3
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.03460847, 0.07402679, 0.112483144, 0.2, 0.25),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Rect2(96, 192, 96, 96), Rect2(192, 192, 96, 96), Rect2(288, 192, 96, 96), Rect2(384, 192, 96, 96), Rect2(480, 192, 96, 96), Rect2(576, 192, 96, 96)]
+}
+
+[sub_resource type="Animation" id="Animation_x6kuy"]
+resource_name = "death"
+length = 0.3
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Rect2(0, 288, 96, 96), Rect2(96, 288, 96, 96), Rect2(192, 288, 96, 96), Rect2(288, 288, 96, 96)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_x6kuy"]
+_data = {
+&"Idle": SubResource("Animation_da4oj"),
+&"RESET": SubResource("Animation_n75w8"),
+&"attack": SubResource("Animation_6v1an"),
+&"death": SubResource("Animation_x6kuy")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c3ytc"]
+size = Vector2(16, 36)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_x6kuy"]
+radius = 18.027756
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_yuhy3"]
+radius = 21.0
+
+[node name="EnemyStationary" type="Node2D" node_paths=PackedStringArray("animation", "death") groups=["Enemy"]]
+script = ExtResource("1_c3ytc")
+animation = NodePath("Node2D/AnimationPlayer")
+death = NodePath("death_timer")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.3
+one_shot = true
+
+[node name="death_timer" type="Timer" parent="."]
+wait_time = 0.3
+one_shot = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -35)
+texture = ExtResource("1_da4oj")
+flip_h = true
+region_enabled = true
+region_rect = Rect2(96, 192, 96, 96)
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Node2D"]
+root_node = NodePath("../..")
+libraries = {
+&"": SubResource("AnimationLibrary_x6kuy")
+}
+autoplay = "Idle"
+
+[node name="Killzone" parent="." instance=ExtResource("2_x6kuy")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Killzone"]
+position = Vector2(0, -19)
+shape = SubResource("RectangleShape2D_c3ytc")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Killzone"]
+position = Vector2(-17, -20)
+shape = SubResource("CircleShape2D_x6kuy")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-22, -20)
+shape = SubResource("CircleShape2D_yuhy3")
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="death_timer" to="." method="_on_death_timer_timeout"]
+[connection signal="animation_finished" from="Node2D/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

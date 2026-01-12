@@ -1,0 +1,118 @@
+[gd_scene load_steps=8 format=3 uid="uid://druqq27ujc8os"]
+
+[ext_resource type="Script" uid="uid://cofneoanogp2l" path="res://Scripts/enemy_1.gd" id="1_0a874"]
+[ext_resource type="Texture2D" uid="uid://c7v2mvb5a85u5" path="res://Assets/Sprites/Samurai_sheet.png" id="1_jwqgc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0a874"]
+size = Vector2(15, 33)
+
+[sub_resource type="Animation" id="Animation_0a874"]
+resource_name = "Hurt"
+length = 0.4
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Rect2(96, 288, 96, 96), Rect2(96, 288, 96, 96), Rect2(192, 288, 96, 96), Rect2(288, 288, 96, 96)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("1_jwqgc")]
+}
+
+[sub_resource type="Animation" id="Animation_jwqgc"]
+resource_name = "Idle"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.90000004),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Rect2(0, 96, 96, 96), Rect2(96, 96, 96, 96), Rect2(192, 96, 96, 96), Rect2(288, 96, 96, 96), Rect2(384, 96, 96, 96), Rect2(480, 96, 96, 96), Rect2(576, 96, 96, 96), Rect2(672, 96, 96, 96), Rect2(768, 96, 96, 96), Rect2(864, 96, 96, 96)]
+}
+
+[sub_resource type="Animation" id="Animation_lssre"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Rect2(0, 288, 96, 96)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("1_jwqgc")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0a874"]
+_data = {
+&"Hurt": SubResource("Animation_0a874"),
+&"Idle": SubResource("Animation_jwqgc"),
+&"RESET": SubResource("Animation_lssre")
+}
+
+[node name="Enemy1" type="CharacterBody2D" node_paths=PackedStringArray("sprite", "animation")]
+script = ExtResource("1_0a874")
+sprite = NodePath("Sprite2D")
+animation = NodePath("AnimationPlayer")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-1, -33)
+texture = ExtResource("1_jwqgc")
+region_enabled = true
+region_rect = Rect2(0, 288, 96, 96)
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-1.5, -16.5)
+shape = SubResource("RectangleShape2D_0a874")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_0a874")
+}
+autoplay = "Idle"
+
+[node name="RayCastRight" type="RayCast2D" parent="."]
+position = Vector2(0, -16)
+target_position = Vector2(14, 0)
+
+[node name="RayCastLeft" type="RayCast2D" parent="."]
+position = Vector2(0, -16)
+target_position = Vector2(-14, 0)
